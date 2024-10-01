@@ -32,7 +32,7 @@ public class EmployeeAppTest extends JavaDatasetSuiteBase {
         EmployeeApp app = new EmployeeApp();
 
         // Call the public method to validate the dataset
-        Dataset<Employee> validatedDs = app.validateEmployeeDataset(employeeDs);
+        Dataset<Employee> validatedDs = invokeValidateEmployeeDataset(employeeDs);
 
         // Collect the results as a list
         List<Employee> result = validatedDs.collectAsList();
@@ -61,7 +61,7 @@ public class EmployeeAppTest extends JavaDatasetSuiteBase {
         EmployeeApp app = new EmployeeApp();
 
         // Call the public method to validate the dataset
-        Dataset<Employee> validatedDs = app.validateEmployeeDataset(employeeDs);
+        Dataset<Employee> validatedDs = app.processEmployeeDataset(employeeDs);
 
         // Filter the dataset by Department = 'IT'
         Dataset<Employee> filteredDs = validatedDs.filter(validatedDs.col("Department").equalTo("IT"));
@@ -75,4 +75,16 @@ public class EmployeeAppTest extends JavaDatasetSuiteBase {
         assertTrue(result.stream().anyMatch(e -> e.getName().equals("Joe")));  // IT department
         assertFalse(result.stream().anyMatch(e -> e.getName().equals("John"))); // Not IT
     }
+    // Reflection to call the private method
+    private Dataset<Employee> invokeValidateEmployeeDataset(Dataset<Employee> employeeDs) {
+        try {
+            // Access the private method
+            java.lang.reflect.Method method = EmployeeApp.class.getDeclaredMethod("validateEmployeeDataset", Dataset.class);
+            method.setAccessible(true);
+            return (Dataset<Employee>) method.invoke(null, employeeDs);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to invoke validation method", e);
+        }
+    }
+
 }

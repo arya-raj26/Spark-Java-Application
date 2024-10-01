@@ -5,6 +5,10 @@ public class Employee {
     private String name;
     private String department;
 
+    // No-argument constructor
+    public Employee() {
+    }
+
     // Constructor
     public Employee(int id, String name, String department) {
         this.id = id;

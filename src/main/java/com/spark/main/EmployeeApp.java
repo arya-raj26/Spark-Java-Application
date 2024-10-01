@@ -49,4 +49,8 @@ public class EmployeeApp {
             .and(employeeDs.col("Department").notEqual(""))
         );
     }
+    
+    public Dataset<Employee> processEmployeeDataset(Dataset<Employee> employeeDs) {
+        return validateEmployeeDataset(employeeDs);
+    }
 }

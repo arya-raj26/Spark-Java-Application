@@ -1,0 +1,12 @@
+/target/
+# Ignore Java class files
+*.class
+
+# Eclipse project files
+.project
+.classpath
+
+# Other common patterns
+bin/
+target/
+*.log

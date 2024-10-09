@@ -51,7 +51,10 @@ public class EmployeeAppTest extends JavaDatasetSuiteBase {
         List<Employee> employees = Arrays.asList(
                 new Employee(1, "John", "HR"),
                 new Employee(2, "Jane", "IT"),
-                new Employee(3, "Joe", "IT")
+                new Employee(3, "Joe", "IT"),
+                new Employee(0, "InvalidID", "IT"), // Invalid ID
+                new Employee(3, null, "Sales"),     // Null name
+                new Employee(4, "", "Sales") 
         );
 
         // Convert list to Dataset using Encoders.bean for the Employee POJO
@@ -62,7 +65,13 @@ public class EmployeeAppTest extends JavaDatasetSuiteBase {
 
         // Call the public method to validate the dataset
         Dataset<Employee> validatedDs = app.processEmployeeDataset(employeeDs);
-
+        
+        // Call the new validation method
+        Dataset<Employee> validatedNameIdDs = app.validateEmployeeNameAndId(employeeDs);
+        
+        // Collect results
+        List<Employee> resultNameId = validatedNameIdDs.collectAsList();
+        
         // Filter the dataset by Department = 'IT'
         Dataset<Employee> filteredDs = validatedDs.filter(validatedDs.col("Department").equalTo("IT"));
 
@@ -74,6 +83,11 @@ public class EmployeeAppTest extends JavaDatasetSuiteBase {
         assertTrue(result.stream().anyMatch(e -> e.getName().equals("Jane"))); // IT department
         assertTrue(result.stream().anyMatch(e -> e.getName().equals("Joe")));  // IT department
         assertFalse(result.stream().anyMatch(e -> e.getName().equals("John"))); // Not IT
+        
+        // Verify that only employees with valid name and ID are retained
+        assertEquals(2, resultNameId.size());
+        assertTrue(resultNameId.stream().anyMatch(emp -> emp.getName().equals("John")));
+        assertTrue(resultNameId.stream().anyMatch(emp -> emp.getName().equals("Jane")));
     }
     // Reflection to call the private method
     private Dataset<Employee> invokeValidateEmployeeDataset(Dataset<Employee> employeeDs) {

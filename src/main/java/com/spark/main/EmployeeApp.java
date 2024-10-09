@@ -25,6 +25,7 @@ public class EmployeeApp {
                 new Employee(3, "Joe", "")
         );
 
+
         // Convert list to Dataset using Encoders.bean for the Employee POJO
         Dataset<Employee> employeeDs = spark.createDataset(employees, Encoders.bean(Employee.class));
 
@@ -40,6 +41,34 @@ public class EmployeeApp {
 
         // Stop the Spark session
         spark.stop();
+    }
+    
+ // Validation method to check if department matches any allowed patterns
+    public static Dataset<Employee> validateDepartmentWithPatterns(Dataset<Employee> employeeDs) {
+    	
+        // List of allowed department patterns
+        final List<String> allowedDepartmentPatterns = Arrays.asList(
+            "HR",          // Exact match for HR
+            "IT",          // Exact match for IT
+            "Sales.*",      // Pattern match for departments starting with "Sales"
+            "Marketing Analytics"
+        );
+    	
+        // Combine all patterns into one regex using "|", which acts like "OR"
+        String regexPattern = String.join("|", allowedDepartmentPatterns);
+
+        // Apply the regex filter using rlike to match the department against the allowed patterns
+        return employeeDs.filter(employeeDs.col("Department").rlike(regexPattern));
+    }
+
+    
+ // Private validation method to check if name is not null or empty, and ID is greater than 0
+    public static Dataset<Employee> validateEmployeeNameAndId(Dataset<Employee> employeeDs) {
+        return employeeDs.filter(
+            employeeDs.col("Name").isNotNull()
+            .and(employeeDs.col("Name").notEqual(""))
+            .and(employeeDs.col("ID").gt(0)) // ID must be greater than 0
+        );
     }
 
     // Private validation method to check if department is not null or empty

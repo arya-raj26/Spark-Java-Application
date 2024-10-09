@@ -70,14 +70,31 @@ public class EmployeeApp {
             .and(employeeDs.col("ID").gt(0)) // ID must be greater than 0
         );
     }
-
-    // Private validation method to check if department is not null or empty
+//
+//    // Private validation method to check if department is not null or empty
+//    private static Dataset<Employee> validateEmployeeDataset(Dataset<Employee> employeeDs) {
+//        return employeeDs.filter(
+//            employeeDs.col("Department").isNotNull()
+//            .and(employeeDs.col("Department").notEqual(""))
+//        );
+//    }
+//    
+ // Combined validation: validate name, ID, department null/empty, and department patterns
     private static Dataset<Employee> validateEmployeeDataset(Dataset<Employee> employeeDs) {
-        return employeeDs.filter(
-            employeeDs.col("Department").isNotNull()
-            .and(employeeDs.col("Department").notEqual(""))
+        // First, validate the name and ID (name is not null/empty, and ID > 0)
+        Dataset<Employee> validatedByNameAndId = validateEmployeeNameAndId(employeeDs);
+
+        // Then, filter out rows where the department is null or empty
+        Dataset<Employee> validatedByDepartmentNotNullOrEmpty = validatedByNameAndId.filter(
+            validatedByNameAndId.col("Department").isNotNull()
+            .and(validatedByNameAndId.col("Department").notEqual("")) // Check if department is not empty
         );
+
+        // Finally, validate the department against the allowed patterns
+        return validateDepartmentWithPatterns(validatedByDepartmentNotNullOrEmpty);
     }
+
+    
     
     public Dataset<Employee> processEmployeeDataset(Dataset<Employee> employeeDs) {
         return validateEmployeeDataset(employeeDs);

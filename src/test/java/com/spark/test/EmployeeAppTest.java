@@ -54,7 +54,7 @@ public class EmployeeAppTest extends JavaDatasetSuiteBase {
                 new Employee(3, "Joe", "IT"),
                 new Employee(0, "InvalidID", "IT"), // Invalid ID
                 new Employee(3, null, "Sales"),     // Null name
-                new Employee(4, "", "Sales") 
+                new Employee(4, "", "Data Engineer") 
         );
 
         // Convert list to Dataset using Encoders.bean for the Employee POJO

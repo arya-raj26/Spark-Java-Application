@@ -1,11 +1,8 @@
-# Spark-Java-Application
-Help me to use spark testing base in spark java application. Feel free to make changes.
+##Spark-Java-Application
+This repository contains a basic Spark Java application built for learning and testing purposes. The goal is to help developers understand how to use the Spark Testing Base library for unit testing in Spark applications and demonstrate how to handle private methods in test classes.
 
-OR :-) You Can also create a PySpark application with testing.
-
-*** Getting Error While Calling Private method in Test Class ***
-
-I am new in Spark and wants to learn spark testing using spark testing base. I have created the basic spark java application for learning purpose.
-If you know Spark then please make the changes accordingly so that Everyone will know how to use spark testing base and how to call private methods in test class.
-
-OR We can use mockito as well to read real time data from Snowflake or Cassandra or SQL.
+Getting Started
+Features:
+Spark Testing Base: Learn how to set up unit tests for Spark applications.
+Calling Private Methods: Example tests that show how to call private methods in Java classes.
+Real-time Data Integration: Guidance on using Mockito to mock data sources like Snowflake, Cassandra, or SQL for testing.

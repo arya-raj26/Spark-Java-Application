@@ -55,6 +55,15 @@
 			<scope>test</scope>
 		</dependency>
 
+		        <!-- Additional Mockito Inline to mock final/static methods -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-inline</artifactId>
+            <version>4.0.0</version>
+            <scope>test</scope>
+        </dependency>
+
+
 		<!-- Scala Library for Spark Testing Base -->
 		<dependency>
 			<groupId>org.scala-lang</groupId>
